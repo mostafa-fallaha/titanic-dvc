@@ -9,12 +9,14 @@ url = "https://github.com/mostafa-fallaha/titanic-dvc"
 data = dvc.api.read("data/Titanic.csv", repo=url)
 df = pd.read_csv(io.StringIO(data))
 
+print(df.head())
+
 df.drop(columns=['Unnamed: 0', 'Name', 'SexCode'], axis=1, inplace=True)
 df.fillna({'Age': df.Age.mean()}, inplace=True)
 df = pd.get_dummies(data=df, columns=['PClass', 'Sex'], drop_first=True)
 
-scaler = StandardScaler()
-df['Age'] = scaler.fit_transform(df[['Age']])
+# scaler = StandardScaler()
+# df['Age'] = scaler.fit_transform(df[['Age']])
 
 columns_to_convert = ['PClass_2nd', 'PClass_3rd', 'Sex_male']
 df[columns_to_convert] = df[columns_to_convert].astype(int)
@@ -31,7 +33,7 @@ df.to_csv(filepath, index=False)
 
 subprocess.run(["dvc", "add", "data/Titanic.csv"], check=True)
 subprocess.run(["git", "add", "data/Titanic.csv.dvc", "data/.gitignore", "gettingAndCleaning.py"], check=True)
-subprocess.run(["git", "commit", "-m", "cleaned data to be ready for a Model"], check=True)
+subprocess.run(["git", "commit", "-m", "cleaned data after reverting"], check=True)
 subprocess.run(["dvc", "push"], check=True)
 subprocess.run(["git", "push"], check=True)
 
