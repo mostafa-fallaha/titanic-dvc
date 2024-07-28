@@ -27,7 +27,7 @@ filepath.parent.mkdir(parents=True, exist_ok=True)
 df.to_csv(filepath, index=False)
 
 
-#------------------------- Versioning the data -----------------------------------
+#------------------------- Versioning the data ---------------------------
 
 subprocess.run(["dvc", "add", "data/Titanic.csv"], check=True)
 subprocess.run(["git", "add", "data/Titanic.csv.dvc", "data/.gitignore", "gettingAndCleaning.py"], check=True)
